@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     let temporalProducts = await productManager.getProducts();    
 
     if (limit) {
-            let temporalArray  = temporalProducts.filter((index) => index < limit)
+            let temporalArray  = temporalProducts.slice(0, +limit)
 
             res.json({
             data: temporalArray,
@@ -40,10 +40,17 @@ router.get("/:pid", async (req, res) => {
     });
 
 router.post("/", (req, res) => {
-    res.send("Hola Mundo");
+    const {nombre, descripcion, img, precio, stock, code} = req.body;
+
+    try {
+        const data = productManager.addProduct(nombre, descripcion, img, precio, stock, code);
+        res.json({message: success, data: data})
+    } catch (error) {
+        console.error("No se hay podido agregar el producto", error)
+        res.status(500).json({message: "error", data: error})}
 })
 
-router.put("/", (req, res) => {
+router.put("/:pid", (req, res) => {
     res.send("Hola Mundo");
 })
 

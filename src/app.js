@@ -1,5 +1,5 @@
 import express from "express";
-import routerProducts from "./routes/products.router.js";
+import productsRoute from "./routes/products.router.js";
 
 const app = express();
 const PORT = 8082;
@@ -15,5 +15,5 @@ app.get("/", (req, res) => {
     res.send("Bienvenidos")
 });
 
-app.use("/api/products", routerProducts);
+app.use("/api/products", productsRoute);
 

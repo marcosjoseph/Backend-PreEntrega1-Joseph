@@ -33,4 +33,3 @@ async function deletefile (file) {
 
 export default {writefile, readfile, deletefile};
 
-
