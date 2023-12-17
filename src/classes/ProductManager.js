@@ -1,4 +1,5 @@
 import utils from "../utils.js";
+import crypto from "crypto"; 
 
 export class ProductManager {
     static ultimoId = 0;
@@ -12,6 +13,7 @@ export class ProductManager {
         if( nombre === undefined || descripcion === undefined || img === undefined || precio === undefined || stock === undefined || code === undefined) {
             throw new Error("Por favor completar todos los datos.")
         }
+
         try {
             let data = await utils.readfile(this.path);
             this.products = data?.length>0 ? data : [];
@@ -21,24 +23,25 @@ export class ProductManager {
 
         if (codeExistente) {throw new Error("El código ya existe, por favor ingrese uno nuevo.")
         } else {
-                ProductManager.ultimoId++;
+                // ProductManager.ultimoId++;
                 const nuevoProducto = {
-                id: ProductManager.ultimoId,
+                id: crypto.randomUUID(),
                 nombre,
                 descripcion,
                 img,
                 precio,
                 stock,
                 code,
-        }
-        this.products.push(nuevoProducto)
-        console.log("Producto Agregado");
-        console.log(this.products.length);
+                }
+
+                this.products.push(nuevoProducto);
+                console.log("Producto Agregado");
+                console.log(this.products.length);
+
         try {
             await utils.writefile(this.path, this.products)
         } catch (error) { console.error(error)}
-        } 
-        }
+        } }
 
     async getProducts () {
         try {
@@ -54,24 +57,24 @@ export class ProductManager {
 
             const elProductoExiste = this.products.find((item) => item.id === idProduct);
 
-            if(elProductoExiste) {return elProductoExiste;
-            } else {return `El producto id: ${id} no existe`}
+            if(elProductoExiste !== undefined) {return elProductoExiste;
+            } else {return `El producto id: ${idProduct} no existe`}
         } catch (error) {console.error(error)}
     }
 
-    async editProduct(idProduct, nuevoDato) {
+    async editProduct(idProduct, nuevoProducto) {
         try {
             let data = await utils.readfile(this.path)
             this.products = data?.length>0 ? data : [];
 
-            const productoAEditar = this.products.findIndex(item=>item.id === idProduct);
+            const productoAEditar = this.products.findIndex((item)=>item.id === idProduct);
 
             if(productoAEditar !== -1) {
-                this.products[productoAEditar] = {...this.products[productoAEditar], ...nuevoDato};
+                this.products[productoAEditar] = {...this.products[productoAEditar], ...nuevoProducto};
                 await utils.writefile(this.path, data);
 
                 return {
-                    message:`El producto ${productoAEditar} ha sido modificado`,
+                    message:`El producto ${idProduct} ha sido modificado`,
                     data: this.products[productoAEditar],
                 }} else { return {message:"No existe el producto solicitado"}}
         } catch (error) {console.error(`No se ha encontrado el producto con id: ${idProduct}`)}
@@ -79,10 +82,10 @@ export class ProductManager {
 
     async deleteProductById(idProduct) {
         try {
-            let data = await utils.readfile(this.path)
+            let data = await utils.readfile(this.path);
             this.products = data?.length>0 ? data : [];
     
-            let productoAEliminar = this.products.findIndex(item=>item.id === idProduct);
+            let productoAEliminar = this.products.findIndex((item)=>item.id === idProduct);
 
             if(productoAEliminar !== -1) {
                 let product = this.products[productoAEliminar];
@@ -91,7 +94,7 @@ export class ProductManager {
                 await utils.writefile(this.path, data);
 
                 return {
-                    message:`El producto ${productoAEliminar} ha sido eliminado`,
+                    message:`El producto ${idProduct} ha sido eliminado`,
                     producto: product,
                 }} else { return {message:"No existe el producto solicitado"}}
         } catch (error) {console.error(`No se ha encontrado el producto con id: ${idProduct}`)}

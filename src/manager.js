@@ -6,6 +6,6 @@ let productsContainer = new ProductManager ("./productos.json");
 
 productsContainer.addProduct("Mesa", "Mesa Quebracho", "img", 100, 2, "101A");
 
-productsContainer.addProduct("Banco", "Quebracho", "img", 101, 5, "101B");
+productsContainer.addProduct("Banco", "Quebracho", "img", 101, 5, "101F");
 
-productsContainer.addProduct("Espejo", "Espejo Quebracho", "img", 102, 1, "101C");
+// productsContainer.addProduct("Espejo", "Espejo Quebracho", "img", 102, 1, "101G");

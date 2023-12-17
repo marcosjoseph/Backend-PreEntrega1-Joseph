@@ -28,14 +28,14 @@ router.get("/", async (req, res) => {
 router.get("/:pid", async (req, res) => {
     const {pid} = req.params;
 
-    let product = await productManager.getProductById(parseInt(pid));
+    let product = await productManager.getProductById(pid);
 
     if (product) {
         res.json({ message: "success", data: product });
         } else {
         res.json({
             message: "el producto solicitado no existe",
-        });
+        })
         }
     });
 
@@ -44,18 +44,52 @@ router.post("/", (req, res) => {
 
     try {
         const data = productManager.addProduct(nombre, descripcion, img, precio, stock, code);
-        res.json({message: success, data: data})
+        res.json({message: "success", data: data})
     } catch (error) {
         console.error("No se hay podido agregar el producto", error)
         res.status(500).json({message: "error", data: error})}
 })
 
-router.put("/:pid", (req, res) => {
-    res.send("Hola Mundo");
+router.put("/:pid", async (req, res) => {
+    const {pid} = req.params;
+    const {nombre, descripcion, img, precio, stock, code} = req.body;
+
+    try {
+        let product = await productManager.getProductById(pid);
+
+        if(product) { 
+            let newProduct = {
+                nombre: nombre || product.nombre,
+                descripcion: descripcion || product.descripcion,
+                img: img || product.img,
+                precio: precio || product.precio,
+                stock: stock || product.stock,
+                code: code || product.code
+            };
+
+            const modification = await productManager.editProduct(pid, newProduct);
+
+            res.json({message: "success", data: modification})
+        } else { res.json({message:"El producto solicitado no existe"})}
+    } catch (error) {
+            console.error("No se hay podido modificar el producto", error);
+            res.status(500).json({message: "error", data: error})}    
 })
 
-router.delete("/", (req, res) => {
-    res.send("Hola Mundo");
+router.delete("/:pid", async (req, res) => {
+    const {pid} = req.params;
+
+    try {
+        let product = await productManager.getProductById(pid);
+
+        if (product) {
+        const deleteProduct = await productManager.deleteProductById(pid);
+
+            res.json({message: "success. El Producto fue eliminado", data: deleteProduct})
+        } else { res.json({message:"El producto solicitado no existe"})}
+    } catch (error) {
+            console.error("No se hay podido eliminar el producto", error);
+            res.status(500).json({message: "error", data: error})}    
 })
 
 
