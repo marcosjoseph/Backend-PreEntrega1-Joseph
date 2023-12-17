@@ -40,10 +40,10 @@ router.get("/:pid", async (req, res) => {
     });
 
 router.post("/", (req, res) => {
-    const {nombre, descripcion, img, precio, stock, code} = req.body;
+    const {categoria, nombre, descripcion, img, precio, stock, code} = req.body;
 
     try {
-        const data = productManager.addProduct(nombre, descripcion, img, precio, stock, code);
+        const data = productManager.addProduct(categoria, nombre, descripcion, img, precio, stock, code);
         res.json({message: "success", data: data})
     } catch (error) {
         console.error("No se hay podido agregar el producto", error)
@@ -52,13 +52,15 @@ router.post("/", (req, res) => {
 
 router.put("/:pid", async (req, res) => {
     const {pid} = req.params;
-    const {nombre, descripcion, img, precio, stock, code} = req.body;
+    const {categoria, nombre, descripcion, img, precio, stock, code} = req.body;
 
     try {
         let product = await productManager.getProductById(pid);
 
         if(product) { 
             let newProduct = {
+                id: product.id,
+                categoria: categoria || product.categoria,
                 nombre: nombre || product.nombre,
                 descripcion: descripcion || product.descripcion,
                 img: img || product.img,

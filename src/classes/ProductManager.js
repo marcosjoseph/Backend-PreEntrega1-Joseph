@@ -9,8 +9,8 @@ export class ProductManager {
         this.products = [];
     }
 
-    async addProduct (nombre, descripcion, img, precio, stock, code) {
-        if( nombre === undefined || descripcion === undefined || img === undefined || precio === undefined || stock === undefined || code === undefined) {
+    async addProduct (categoria, nombre, descripcion, img, precio, stock, code, status) {
+        if(categoria === undefined || nombre === undefined || descripcion === undefined || img === undefined || precio === undefined || stock === undefined || code === undefined) {
             throw new Error("Por favor completar todos los datos.")
         }
 
@@ -26,12 +26,14 @@ export class ProductManager {
                 // ProductManager.ultimoId++;
                 const nuevoProducto = {
                 id: crypto.randomUUID(),
+                categoria,
                 nombre,
                 descripcion,
                 img,
                 precio,
                 stock,
                 code,
+                status: true
                 }
 
                 this.products.push(nuevoProducto);
