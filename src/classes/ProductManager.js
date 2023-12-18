@@ -2,7 +2,7 @@ import utils from "../utils.js";
 import crypto from "crypto"; 
 
 export class ProductManager {
-    static ultimoId = 0;
+    // static ultimoId = 0;
         
     constructor (path) {
         this.path = path;
@@ -38,7 +38,7 @@ export class ProductManager {
 
                 this.products.push(nuevoProducto);
                 console.log("Producto Agregado");
-                console.log(this.products.length);
+                console.log(`Hay ${this.products.length} producto/s guardados`);
 
         try {
             await utils.writefile(this.path, this.products)

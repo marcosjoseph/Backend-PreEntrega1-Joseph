@@ -1,5 +1,6 @@
 import express from "express";
-import productsRoute from "./routes/products.router.js";
+import productsRouter from "./routes/products.router.js";
+import cartRouter from "./routes/cart.router.js";
 
 const app = express();
 const PORT = 8082;
@@ -15,5 +16,6 @@ app.get("/", (req, res) => {
     res.send("Bienvenidos")
 });
 
-app.use("/api/products", productsRoute);
+app.use("/api/products", productsRouter);
+app.use("/api/cart", cartRouter);
 

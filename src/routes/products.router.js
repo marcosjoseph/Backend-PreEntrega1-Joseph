@@ -3,7 +3,7 @@ import {ProductManager} from "../classes/ProductManager.js";
 
 const router = Router();
 
-const productManager = new ProductManager ("productos.json");
+const productManager = new ProductManager ("./archivosJson/productos.json");
 
 router.get("/", async (req, res) => {
     const {limit} = req.query;
@@ -59,7 +59,6 @@ router.put("/:pid", async (req, res) => {
 
         if(product) { 
             let newProduct = {
-                id: product.id,
                 categoria: categoria || product.categoria,
                 nombre: nombre || product.nombre,
                 descripcion: descripcion || product.descripcion,
